@@ -15,6 +15,7 @@ from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.task import PipelineParams, PipelineTask
 from pipecat.processors.aggregators.llm_context import LLMContext
+from pipecat.serializers.protobuf import ProtobufFrameSerializer
 from pipecat.processors.aggregators.llm_response_universal import LLMContextAggregatorPair
 from pipecat.transports.websocket.server import WebsocketServerParams, WebsocketServerTransport
 
@@ -40,11 +41,11 @@ def build_pipeline(
     # Transport
     transport = WebsocketServerTransport(
         params=WebsocketServerParams(
+            serializer=ProtobufFrameSerializer(),
+            audio_in_enabled=True,
             audio_out_enabled=True,
-            add_wav_header=True,
-            vad_enabled=True,
-            vad_analyzer=SileroVADAnalyzer(),
-            vad_audio_passthrough=True,
+            add_wav_header=False,
+            # session_timeout=60 * 3,  # 3 minutes
         ),
         host=host,
         port=port,
@@ -76,9 +77,10 @@ def build_pipeline(
     task = PipelineTask(
         pipeline,
         params=PipelineParams(
-            audio_in_sample_rate=16000,
-            audio_out_sample_rate=16000,
+            # audio_in_sample_rate=16000,
+            # audio_out_sample_rate=16000,
             enable_metrics=True,
+            enable_usage_metrics=True,
         ),
     )
 
