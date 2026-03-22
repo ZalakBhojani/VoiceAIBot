@@ -1,7 +1,7 @@
 description: Baseline debt collection agent
 fitness_score: 5.0
 llm:
-  max_tokens: 300
+  max_tokens: 2000
   model: gemini-2.5-pro
   provider: vertex-gemini
   temperature: 0.3
