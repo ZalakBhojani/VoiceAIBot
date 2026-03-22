@@ -50,5 +50,5 @@ stt:
   provider: deepgram
 tts:
   provider: cartesia
-  voice_id: sonic-english
+  voice_id: e07c00bc-4134-4eae-9ea4-1a55fb45746b
 version: v1
