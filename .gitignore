@@ -1,0 +1,12 @@
+.env
+creds.txt
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+results/*/
+!results/.gitkeep
+venv/
+.venv/
+PLAN*
+.claude

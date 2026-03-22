@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: voiceaibot
+Version: 0.1.0
+Summary: Darwin Gödel Machine-inspired debt collection voice agent
+Requires-Python: >=3.11
+Requires-Dist: pipecat-ai[cartesia,deepgram,google,silero]>=0.0.47
+Requires-Dist: google-genai>=1.0.0
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: click>=8.1.7
+Requires-Dist: rich>=13.7.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23.0; extra == "dev"

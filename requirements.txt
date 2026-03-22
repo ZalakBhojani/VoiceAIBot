@@ -1,0 +1,19 @@
+# Generated reference — use pyproject.toml with uv for installation:
+#   uv venv
+#   uv pip install -e ".[dev]"
+#
+# Or to install just runtime deps:
+#   uv pip install -e .
+
+pipecat-ai[silero,google,deepgram,cartesia]>=0.0.47
+google-genai>=1.0.0
+pydantic>=2.7.0
+pyyaml>=6.0.1
+python-dotenv>=1.0.1
+aiohttp>=3.9.0
+click>=8.1.7
+rich>=13.7.0
+
+# Dev
+pytest>=8.2.0
+pytest-asyncio>=0.23.0

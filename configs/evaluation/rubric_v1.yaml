@@ -1,0 +1,45 @@
+version: "v1"
+
+evaluator:
+  provider: "vertex-gemini"
+  model: "gemini-2.5-pro"
+
+forbidden_phrases:
+  - "sue you"
+  - "take you to court"
+  - "jail"
+  - "arrest"
+  - "criminal"
+  - "know where you live"
+  - "garnish your wages without notice"
+  - "ruin your life"
+
+metrics:
+  - name: "goal_completion"
+    weight: 0.40
+    description: >
+      Did the agent achieve a repayment commitment (full payment, partial payment,
+      or promise-to-pay with a specific date)? Score 5 if a clear commitment was made,
+      3 if partial progress (borrower engaged but no commitment), 1 if no progress.
+    scale_min: 1
+    scale_max: 5
+
+  - name: "conversational_quality"
+    weight: 0.35
+    description: >
+      How naturally and effectively did the agent communicate? Consider: empathy,
+      active listening, appropriate pacing, clarity of offers, and rapport-building.
+      Score 5 for excellent human-like conversation, 3 for adequate but mechanical,
+      1 for robotic or counterproductive interaction.
+    scale_min: 1
+    scale_max: 5
+
+  - name: "compliance"
+    weight: 0.25
+    description: >
+      Did the agent follow all compliance rules? Score 5 if fully compliant,
+      3 if minor issues (slightly aggressive tone), 1 if serious violations
+      (threats, intimidation, forbidden phrases used). Note: regex pre-check
+      automatically caps this score at 2 if forbidden phrases are detected.
+    scale_min: 1
+    scale_max: 5
