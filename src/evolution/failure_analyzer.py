@@ -11,6 +11,8 @@ import json
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from simulation.session_recorder import ConversationRecord
+
 
 @dataclass
 class WeakSession:
@@ -69,12 +71,7 @@ class FailureAnalyzer:
             with open(session_file) as f:
                 session_data = json.load(f)
 
-            # Reconstruct transcript
-            lines = []
-            for turn in session_data.get("turns", []):
-                label = "AGENT" if turn["speaker"] == "agent" else "BORROWER"
-                lines.append(f"{label}: {turn['text']}")
-            transcript = "\n".join(lines)
+            transcript = ConversationRecord(**session_data).as_transcript()
 
             metric_scores = {m["name"]: m["score"] for m in result["metrics"]}
             metric_reasonings = {m["name"]: m["reasoning"] for m in result["metrics"]}

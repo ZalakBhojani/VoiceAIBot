@@ -1,0 +1,107 @@
+{
+  "schema_version": "1",
+  "entries": [
+    {
+      "version": "v1",
+      "parent_version": null,
+      "fitness_score": 4.6889,
+      "created_at": "2026-03-23T20:16:56.916646+00:00",
+      "status": "promoted",
+      "mutation_rationale": null,
+      "failure_addressed": null,
+      "mutations_applied": [],
+      "per_metric_scores": {
+        "goal_completion": 4.5556,
+        "conversational_quality": 4.7778,
+        "compliance": 4.7778
+      },
+      "per_persona_scores": {
+        "curious_defaulter": 4.4,
+        "distressed_defaulter": 5.0,
+        "angry_defaulter": 4.2,
+        "cooperative_defaulter": 5.0,
+        "evasive_defaulter": 5.0
+      },
+      "simulation_runs": 9,
+      "generation": 0
+    },
+    {
+      "version": "v2",
+      "parent_version": "v1",
+      "fitness_score": null,
+      "created_at": "2026-03-23T20:17:22.472385+00:00",
+      "status": "pending",
+      "mutation_rationale": "The new behavioral guideline provides a specific de-escalation tactic for immediate hostility, addressing the goal completion failure with angry personas. The added conversation style rule explicitly instructs the agent to terminate the call after a goodbye, which will prevent the repetitive closing loop that degraded conversational quality.",
+      "failure_addressed": "Agent's inability to handle immediate hostility and getting stuck in repetitive 'goodbye' loops at the end of a call.",
+      "mutations_applied": [
+        "behavioral_guidelines",
+        "conversation_style"
+      ],
+      "per_metric_scores": {},
+      "per_persona_scores": {},
+      "simulation_runs": 0,
+      "generation": 1
+    },
+    {
+      "version": "v3",
+      "parent_version": "v1",
+      "fitness_score": 4.47,
+      "created_at": "2026-03-23T20:39:38.349731+00:00",
+      "status": "failed",
+      "mutation_rationale": "The new behavioral guideline provides a direct strategy for de-escalating immediate hostility, which caused the hangup in session b989b61a. The new conversation style rule adds an explicit termination command to prevent the repetitive 'goodbye' loop that degraded quality in session 184650af.",
+      "failure_addressed": "Agent's inability to handle immediate hostility and a conversational loop at the end of the call.",
+      "mutations_applied": [
+        "behavioral_guidelines",
+        "conversation_style"
+      ],
+      "per_metric_scores": {
+        "goal_completion": 4.2,
+        "conversational_quality": 4.4,
+        "compliance": 5.0
+      },
+      "per_persona_scores": {
+        "evasive_defaulter": 3.5,
+        "curious_defaulter": 5.0,
+        "angry_defaulter": 3.85,
+        "cooperative_defaulter": 5.0,
+        "distressed_defaulter": 5.0
+      },
+      "simulation_runs": 5,
+      "generation": 1
+    },
+    {
+      "version": "v4",
+      "parent_version": "v1",
+      "fitness_score": null,
+      "created_at": "2026-03-23T20:43:18.960015+00:00",
+      "status": "pending",
+      "mutation_rationale": "The updated `behavioral_guidelines` provide a specific de-escalation strategy for hostile openings, addressing the immediate hangup failure. The new `conversation_style` rule adds an explicit termination command to prevent the repetitive 'goodbye' loop that degraded conversational quality.",
+      "failure_addressed": "Agent's inability to de-escalate initial hostility and its tendency to get stuck in repetitive closing loops.",
+      "mutations_applied": [
+        "behavioral_guidelines",
+        "conversation_style"
+      ],
+      "per_metric_scores": {},
+      "per_persona_scores": {},
+      "simulation_runs": 0,
+      "generation": 1
+    },
+    {
+      "version": "v5",
+      "parent_version": "v1",
+      "fitness_score": null,
+      "created_at": "2026-03-24T06:15:14.538683+00:00",
+      "status": "pending",
+      "mutation_rationale": "The new behavioral guideline provides a specific strategy for de-escalating immediate hostility, addressing the hangup with angry personas. The updated conversation style adds an explicit rule to terminate the call gracefully, preventing the repetitive 'goodbye' loops.",
+      "failure_addressed": "Failure to engage hostile borrowers and unnatural conversation closing loops.",
+      "mutations_applied": [
+        "behavioral_guidelines",
+        "conversation_style"
+      ],
+      "per_metric_scores": {},
+      "per_persona_scores": {},
+      "simulation_runs": 0,
+      "generation": 1
+    }
+  ]
+}

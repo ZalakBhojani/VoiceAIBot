@@ -1,5 +1,5 @@
 description: Baseline debt collection agent
-fitness_score: 5.0
+fitness_score: 4.6889
 llm:
   max_tokens: 2000
   model: gemini-2.5-pro
@@ -44,6 +44,12 @@ prompt:
     language.
 
     '
+hangup_phrases:
+  - "goodbye"
+  - "good bye"
+  - "take care"
+  - "have a good day"
+  - "have a good rest of your day"
 stt:
   language: en-US
   model: nova-2
