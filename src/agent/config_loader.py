@@ -45,6 +45,10 @@ class AgentConfig(BaseModel):
     description: str
     parent_version: Optional[str] = None
     fitness_score: Optional[float] = None
+    mutation_rationale: Optional[str] = None
+    failure_addressed: Optional[str] = None
+    mutations_applied: list[str] = Field(default_factory=list)
+    generation: int = 0
     llm: LLMConfig
     tts: TTSConfig
     stt: STTConfig
