@@ -118,12 +118,12 @@ async def score_batch(
     rubric: EvaluationRubric,
     agent_version: str,
 ) -> BatchEvaluationResult:
-    results = list(
-        await asyncio.gather(*[evaluate_session(record, rubric) for record in records])
-    )
-    for result in results:
+    results = []
+    for record in records:
+        result = await evaluate_session(record, rubric)
+        results.append(result)
         logger.info(
-            f"[{result.session_id}] Scored — weighted_total: {result.weighted_total:.2f}"
+            f"[{record.session_id}] Scored — weighted_total: {result.weighted_total:.2f}"
         )
 
     return BatchEvaluationResult(
