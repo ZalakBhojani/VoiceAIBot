@@ -15,8 +15,8 @@ Flow:
    goodbye audio has already been sent.
 """
 
-from pipecat.frames.frames import BotStoppedSpeakingFrame, EndFrame, TextFrame
-from pipecat.processors.frame_processor import FrameProcessor
+from pipecat.frames.frames import BotStoppedSpeakingFrame, EndTaskFrame, TextFrame
+from pipecat.processors.frame_processor import FrameDirection, FrameProcessor
 from loguru import logger
 
 
@@ -44,7 +44,7 @@ class HangupPhraseDetector(FrameProcessor):
         elif isinstance(frame, BotStoppedSpeakingFrame) and self._triggered:
             logger.info("[HangupDetector] Bot finished speaking — sending EndFrame")
             await self.push_frame(frame, direction)
-            await self.push_frame(EndFrame("Bot came up with the hangup_phase"))
+            await self.push_frame(EndTaskFrame("Bot came up with the hangup_phase"), FrameDirection.UPSTREAM)
             return
 
         await self.push_frame(frame, direction)
