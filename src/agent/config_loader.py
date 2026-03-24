@@ -49,6 +49,7 @@ class AgentConfig(BaseModel):
     failure_addressed: Optional[str] = None
     mutations_applied: list[str] = Field(default_factory=list)
     generation: int = 0
+    hangup_phrases: list[str] = Field(default_factory=list)
     llm: LLMConfig
     tts: TTSConfig
     stt: STTConfig

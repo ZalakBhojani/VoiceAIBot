@@ -21,6 +21,7 @@ from pipecat.transports.websocket.server import WebsocketServerParams, Websocket
 
 from src.agent.config_loader import AgentConfig
 from src.agent.prompt_builder import build_system_prompt
+from src.voice.end_call_detector import HangupPhraseDetector
 from src.voice.services import build_llm_service, build_stt_service, build_tts_service
 
 
@@ -55,6 +56,7 @@ def build_pipeline(
     stt = build_stt_service(agent_config)
     llm = build_llm_service(agent_config, system_prompt)
     tts = build_tts_service(agent_config)
+    hangup_detector = HangupPhraseDetector(hangup_phrases=agent_config.hangup_phrases)
 
     # Context — system instruction lives in LLM settings; context starts empty.
     # The opening message is injected via LLMMessagesAppendFrame on client connect.
@@ -68,6 +70,7 @@ def build_pipeline(
             stt,
             context_aggregator.user(),
             llm,
+            hangup_detector,
             tts,
             transport.output(),
             context_aggregator.assistant(),
