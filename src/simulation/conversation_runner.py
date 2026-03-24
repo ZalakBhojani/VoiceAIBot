@@ -5,6 +5,7 @@ The agent uses the same system prompt it would use in the voice pipeline,
 ensuring simulation fidelity.
 """
 
+import re
 import uuid
 from src.agent.config_loader import AgentConfig, PersonaConfig
 from src.agent.prompt_builder import build_system_prompt, get_opening_message
@@ -19,7 +20,7 @@ MAX_TURNS = 20
 
 def _check_keywords(text: str, keywords: list[str]) -> bool:
     text_lower = text.lower()
-    return any(kw.lower() in text_lower for kw in keywords)
+    return any(re.search(kw.lower(), text_lower) for kw in keywords)
 
 
 async def run_conversation(
@@ -57,6 +58,11 @@ async def run_conversation(
     logger.debug(f"AGENT: {opening}")
 
     outcome = "max_turns"
+    # Track whether each side has signalled the call is over.
+    # The loop ends only when both sides have done so (order doesn't matter).
+    persona_signed_off = False
+    agent_signed_off = False
+    pending_outcome: str | None = None  # set when persona signals, finalised when both sign off
 
     for turn_num in range(max_turns):
         # --- Persona responds ---
@@ -66,16 +72,18 @@ async def run_conversation(
         agent_history.append({"role": "user", "content": persona_response})
         logger.debug(f"PERSONA: {persona_response}")
 
-        # Check for hangup
-        if _check_keywords(persona_response, persona.hangup_keywords):
-            outcome = "hangup"
-            logger.info(f"[{session_id}] Persona hung up after {turn_num + 1} turns")
-            break
+        if not persona_signed_off:
+            if _check_keywords(persona_response, persona.hangup_keywords):
+                persona_signed_off = True
+                pending_outcome = "hangup"
+                logger.info(f"[{session_id}] Persona signalled hangup (turn {turn_num + 1})")
+            elif _check_keywords(persona_response, persona.resolution_keywords):
+                persona_signed_off = True
+                pending_outcome = "agreement"
+                logger.info(f"[{session_id}] Persona signalled agreement (turn {turn_num + 1})")
 
-        # Check for resolution
-        if _check_keywords(persona_response, persona.resolution_keywords):
-            outcome = "agreement"
-            logger.info(f"[{session_id}] Agreement reached after {turn_num + 1} turns")
+        if persona_signed_off and agent_signed_off:
+            outcome = pending_outcome
             break
 
         # --- Agent responds ---
@@ -90,6 +98,14 @@ async def run_conversation(
         agent_history.append({"role": "assistant", "content": agent_response})
         persona_history.append({"role": "user", "content": agent_response})
         logger.debug(f"AGENT: {agent_response}")
+
+        if not agent_signed_off and _check_keywords(agent_response, agent_config.hangup_phrases):
+            agent_signed_off = True
+            logger.info(f"[{session_id}] Agent signalled farewell (turn {turn_num + 1})")
+
+        if persona_signed_off and agent_signed_off:
+            outcome = pending_outcome
+            break
 
     record.finalize(outcome)
     logger.info(f"[{session_id}] Conversation ended — outcome: {outcome}, turns: {len(record.turns)}")
