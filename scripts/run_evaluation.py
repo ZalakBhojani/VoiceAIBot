@@ -49,7 +49,7 @@ async def _run(agent_version: str):
     print_report(batch)
     save_report(batch)
 
-    # Write fitness score back to agent config (Part 2 prep)
+    # Write fitness score back to agent config
     agent_config_path = Path("configs/agents") / f"agent_{agent_version}.yaml"
     if agent_config_path.exists():
         import yaml

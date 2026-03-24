@@ -31,18 +31,14 @@ async def run_server(
     @transport.event_handler("on_client_connected")
     async def on_client_connected(transport, websocket):
         logger.info(f"Client connected: {websocket.remote_address}")
-        # Inject the scripted opening message as a user turn so the LLM
-        # generates the agent greeting and TTS speaks it.
-        opening = get_opening_message(agent_config)
         await task.queue_frames(
             [
                 LLMMessagesAppendFrame(
-                    messages=[{"role": "user", "content": "begin"}],
+                    messages=[{"role": "user", "content": "begins"}],
                     run_llm=True,
                 )
             ]
         )
-        logger.info(f"Opening script: {opening!r}")
 
     @transport.event_handler("on_client_disconnected")
     async def on_client_disconnected(transport, websocket):
